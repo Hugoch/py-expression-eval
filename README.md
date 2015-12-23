@@ -15,7 +15,7 @@ but don't feel like you have to let me know or ask permission.
 ## Installation
 
     pip install py_expression_eval
-    
+
 ## Documentation
 
 All the classes and methods of ``py-expression-eval`` were written as similar as possible to their analogues from   [js-expression-eval](https://github.com/silentmatt/js-expression-eval) to make it easier to use for validation on back-end side.
@@ -26,7 +26,7 @@ All the classes and methods of ``py-expression-eval`` were written as similar as
 ``Parser`` is the main class of the library that contains the methods to parse, evaluate and simplify mathematical expressions. In order to use the library you need to create an instance of this class:
 
     > parser = Parser()
-    
+
 Once you instantiated ``Parser`` class, you can create ``Expression`` object using ``parse`` method:
 
     > parser.parse('2 * 3')
@@ -45,12 +45,12 @@ Once you instantiated ``Parser`` class, you can create ``Expression`` object usi
 
     > parser.parse('2 * x').substitute('x', '3 + x').toString()
     Out: '(2.0*(3.0+x))'
-    
+
 ``variables()`` returns a list of the variables for the expression:
 
     > parser.parse('2 * x + y').variables()
     Out: ['x', 'y']
-    
+
 ``simplify()`` simplifies the expression. For example,
 
     > parser.parse('2 * 3 * x + y').simplify({}).toString()
@@ -65,7 +65,7 @@ Once you instantiated ``Parser`` class, you can create ``Expression`` object usi
 ### Available operators, constants and functions
 
 Expression | Example | Output
----------- | ------- | ------ 
+---------- | ------- | ------
 +          | ``parser.parse('2 + 2').evaluate({})`` | 4.0
 -          | ``parser.parse('3 - 1').evaluate({})`` | 2.0
 *          | ``parser.parse('2 * 3').evaluate({})`` | 6.0
@@ -86,11 +86,14 @@ ceil(x)    | ``parser.parse('ceil(2.7)').evaluate({})`` | 3.0
 floor(x)    | ``parser.parse('floor(2.7)').evaluate({})`` | 2.0
 round(x)    | ``parser.parse('round(2.7)').evaluate({})`` | 3.0
 exp(x)    | ``parser.parse('exp(2)').evaluate({})`` | 7.38905609893065
+>          | ``parser.parse('1>2').evaluate({})`` | 0
+<          | ``parser.parse('1<2').evaluate({})`` | 1
+=          | ``parser.parse('1=2').evaluate({})`` | 0
 
 ## Examples
 
     from py_expression_eval import Parser
-    
+
     parser = Parser()
     parser.parse('2 * 3').evaluate({})  # 6
     parser.parse('2 ^ x').evaluate({'x': 3})  # 8
@@ -103,17 +106,17 @@ exp(x)    | ``parser.parse('exp(2)').evaluate({})`` | 7.38905609893065
     parser.parse('(-3)^x').evaluate({'x': 4})  # 81
     parser.parse('2*x + y').evaluate({'x': 4, 'y': 1})  # 9
     parser.parse('round(log(2.7))').evaluate({}) # 1
-    
+
     # substitute
     expr = parser.parse('2 * x + 1')
     expr2 = expr.substitute('x', '4 * x')  # ((2*(4*x))+1)
     expr2.evaluate({'x': 3})  # 25
-    
+
     # simplify
     expr = parser.parse('x * (y * atan(1))').simplify({'y': 4})
     expr.toString()  # x*3.141592
     expr.evaluate({'x': 2})  # 6.283185307179586
-    
+
     # get variables
     expr = parser.parse('x * (y * atan(1))')
     expr.variables()  # ['x', 'y']
@@ -124,7 +127,7 @@ Available operations
 --------------------
 
     from py_expression_eval import Parser
-    
+
     parser = Parser()
     parser.parse('2 + 3').evaluate({})  # 5.0
     parser.parse('2 - 3').evaluate({})  # -1.0
@@ -133,27 +136,29 @@ Available operations
     parser.parse('2 % 3').evaluate({})  # 2.0
     parser.parse('-2').evaluate({})  # -2.0
     parser.parse('abs(-2)').evaluate({}) # 2.0
-    
+
     parser.parse('ceil(1.4)').evaluate({})  # 2.0
     parser.parse('floor(1.4)').evaluate({})  # 1.0
     parser.parse('round(1.4)').evaluate({})  # 1.0
-    
+
     parser.parse('2^3').evaluate({})  # 8.0
     parser.parse('sqrt(16)').evaluate({}) # 4.0
-    
+
     parser.parse('sin(3.14)').evaluate({})  # 0.0015926529164868282
     parser.parse('cos(3.14)').evaluate({})  # -0.9999987317275395
     parser.parse('tan(3.14)').evaluate({})  # -0.0015926549364072232
-    
+
     parser.parse('asin(1)').evaluate({})  # 1.5707963267948966
     parser.parse('acos(1)').evaluate({})  # 0.0
     parser.parse('atan(1)').evaluate({})  # 0.7853981633974483
-    
+
     parser.parse('log(2.7)').evaluate({})  # 0.9932517730102834
     parser.parse('exp(1)').evaluate({})  # 2.718281828459045
-    
+
     parser.parse('log(E)').evaluate({})  # 1.0
     parser.parse('cos(PI)').evaluate({})  # -1.0
-    
-    parser.parse('x||y').evaluate({'x': 2, 'y': 3})  # '23'
 
+    parser.parse('x||y').evaluate({'x': 2, 'y': 3})  # '23'
+    parser.parse('1>2').evaluate({}) # 0
+    parser.parse('1<2').evaluate({}) # 1
+    parser.parse('1=2').evaluate({}) # 0

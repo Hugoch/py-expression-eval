@@ -391,6 +391,15 @@ class Parser:
         a.append(b)
         return a
 
+    def greater(self, a, b):
+        return int((a > b))
+
+    def lower(self, a, b):
+        return int((a < b))
+
+    def equals(self, a, b):
+        return int((a == b))
+
     def __init__(self):
         self.success = False
         self.errormsg = ''
@@ -429,6 +438,9 @@ class Parser:
             '^': math.pow,
             ',': self.append,
             '||': self.concat,
+            '>': self.greater,
+            '<': self.lower,
+            '=': self.equals
         }
 
         self.functions = {
@@ -727,6 +739,15 @@ class Parser:
         elif code == '^':
             self.tokenprio = 3
             self.tokenindex = '^'
+        elif code == '>':
+            self.tokenprio = 0
+            self.tokenindex = '>'
+        elif code == '<':
+            self.tokenprio = 0
+            self.tokenindex = '<'
+        elif code == '=':
+            self.tokenprio = 0
+            self.tokenindex = '='
         else:
             return False
         self.pos += 1
