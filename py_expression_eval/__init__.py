@@ -827,7 +827,8 @@ class Parser:
         for i in range(self.pos, len(self.expression)):
             c = self.expression[i]
             if c.lower() == c.upper():
-                if i == self.pos or (c != '_' and (c < '0' or c > '9')):
+                if i == self.pos or (c != '_' and c!= '@' and
+                                     (c < '0' or c > '9')):
                     break
             str += c
         if str:
