@@ -42,6 +42,7 @@ class ParserTestCase(unittest.TestCase):
         self.assertEqual(parser.parse('x.y@TOC').evaluate({'x.y@TOC': 5}), 5)
         self.assertEqual(parser.parse('x.y.z').evaluate({'x.y.z': 5}), 5)
         self.assertEqual(parser.parse('1.02').evaluate({}), 1.02)
+        self.assertEqual(parser.parse('2*x@TOC').evaluate({'x@TOC': 5}), 10)
 
         # test substitute
         expr = parser.parse('2 * x + 1')
