@@ -622,7 +622,11 @@ class Parser:
         str = ''
         while self.pos < len(self.expression):
             code = self.expression[self.pos]
-            if (code >= '0' and code <= '9') or code == '.':
+            if self.pos > 0:
+                code_prev = self.expression[self.pos - 1]
+            else:
+                code_prev = '0'
+            if (code >= '0' and code <= '9') or (code == '.' and code_prev >= '0' and code_prev <= '9'):
                 str += self.expression[self.pos]
                 self.pos += 1
                 self.tokennumber = float(str)
@@ -827,7 +831,7 @@ class Parser:
         for i in range(self.pos, len(self.expression)):
             c = self.expression[i]
             if c.lower() == c.upper():
-                if i == self.pos or (c != '_' and c!= '@' and
+                if i == self.pos or (c != '_' and c != '@' and c != '.' and
                                      (c < '0' or c > '9')):
                     break
             str += c
